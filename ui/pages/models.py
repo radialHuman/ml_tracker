@@ -12,7 +12,12 @@ from pandas import DataFrame
 
 
 def app():
-    model_df = DataFrame(fun.read_model_data())
+    df = DataFrame(fun.read_model_data())
+    model_groups = df["model_group"].unique()
+    model_selected = st.selectbox("Which model group?",
+                                  model_groups)
+    model_df = df[df["model_group"] == model_selected]
+    model_df.index = range(model_df.shape[0])
     model_metric = model_df["result"][0].keys()
     parameter_metric = model_df["parameters"][0].keys()
     metric_dict = {}
@@ -36,6 +41,10 @@ def app():
     details_df = metric_df.join(parameter_df)
     st.table(details_df)
 
-    for col in metric_df.columns:
-        st.header(f'{col} : ')
-        st.bar_chart(metric_df[col])
+    number_of_metrics = len(metric_df.columns)
+    cols = st.columns([1]*number_of_metrics)
+    for n,col in enumerate(metric_df.columns):
+        with cols[n]:
+            st.header(f'{col} : ')
+            st.bar_chart(metric_df[col],  width=500, height=500,
+                        use_container_width=False)
