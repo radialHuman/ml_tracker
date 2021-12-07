@@ -26,5 +26,8 @@ class General:
     def read_model_data():
         return supabase.table("tracker").select("*").execute()["data"]
 
+    def read_cleaned_data(data_set):
+        return read_csv(data_set)
+
     def show_data_text():
         return "Something Data"

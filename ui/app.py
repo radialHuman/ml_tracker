@@ -10,7 +10,7 @@ Main page with
 
 
 from utils.multi_page import MultiApp
-from pages import models, data
+from pages import models, data, use_model, insights
 import streamlit as st
 # from PIL import Image
 
@@ -35,4 +35,6 @@ st.markdown(hide_extra, unsafe_allow_html=True)
 app = MultiApp()
 app.add_app("Models", models.app)
 app.add_app("Data", data.app)
+app.add_app("Run model", use_model.app)
+app.add_app("Insights", insights.app)
 app.run()
